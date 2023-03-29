@@ -13,7 +13,19 @@ private:
     Position pos;
 
 public:
+    Unit(int x, int y){
+        setPos(Position(x, y));
+    }
 
+    Unit() {}
+
+    Position getPos(){
+        return this->pos;
+    }
+
+    void setPos(Position value){
+        this->pos = value;
+    }
 };
 
 

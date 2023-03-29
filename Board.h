@@ -5,16 +5,16 @@
 #ifndef HELLOSFML_BOARD_H
 #define HELLOSFML_BOARD_H
 
-
 #include <SFML/Graphics.hpp>
 #include "Cell.h"
 #include <vector>
 
+extern const int CELL_WIDTH, CELL_HEIGHT;
+
 class Board {
 private:
     int rows, cols;
-//    std::vector< std::vector<Cell> > cell;
-    Cell *cell;
+    Cell *cell[];
 public:
     int getRows(){
         return this->rows;
@@ -33,11 +33,11 @@ public:
     }
 
     void initCells(){
-        for(int i = 0; i < rows; i++){
-//            for(int j = 0; j < cols; j++){
-//                cell[i][j] = new Cell();
-//            }
-            cell[i] = new Cell;
+        for(int i = 0; i < this->getRows(); i++){
+            cell[i] = new Cell[cols];
+            for(int j = 0; j < this->getCols(); j++){
+                cell[i][j] = Cell(j, i);
+            }
         }
     }
 
@@ -48,7 +48,8 @@ public:
     }
 
     void draw(){
-        sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
+        std::cout << "draw" << std::endl;
+        sf::RenderWindow window(sf::VideoMode(rows * CELL_WIDTH, cols * CELL_HEIGHT), "SFML Application");
 
         while (window.isOpen())
         {
@@ -60,13 +61,12 @@ public:
                     window.close();
             }
 
+            window.clear();
             for(int i = 0; i < rows; i++){
                 for(int j = 0; j < cols; j++){
-                    window.draw(cell[i][j]);
+                    cell[i][j].draw(&window);
                 }
             }
-
-            window.clear();
             window.display();
         }
 

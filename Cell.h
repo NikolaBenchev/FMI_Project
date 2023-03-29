@@ -7,38 +7,48 @@
 
 
 #include <iostream>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <map>
 #include "Position.h"
 #include "Unit.h"
+#include "Tribe.h"
 
-enum{
-
-};
-
+extern const int CELL_WIDTH, CELL_HEIGHT;
+extern const std::map<Tribe, sf::Color> TribeColor;
 
 class Cell {
 private:
     Position pos;
     Unit unit;
+    sf::RectangleShape shape;
     void copy(Cell *other){
         setPos(other->getPos());
         setUnit(other->getUnit());
     }
 public:
     Cell(int x, int y){
-        pos.x = x;
-        pos.y = y;
+        setPos(Position(x, y));
+    Tribe EnumOfIndex(int i){return static_cast<Tribe>(i);};
+//    TribeColor.find(0);
     }
+
+    Cell(){}
 
     Cell &operator=(Cell *other){
         copy(other);
         return *this;
     }
 
-    void draw(){
-
+    void draw(sf::RenderWindow *window){
+        shape.setSize(sf::Vector2f(CELL_WIDTH, CELL_HEIGHT));
+        shape.setPosition(pos.x * CELL_WIDTH, pos.y * CELL_HEIGHT);
+        shape.setOutlineColor(sf::Color::Black);
+        shape.setOutlineThickness(2);
+        window->draw(shape);
     }
 
-    const Position getPos(){
+    Position getPos(){
         return this->pos;
     }
 
@@ -46,7 +56,7 @@ public:
         this->pos = value;
     }
 
-    const Unit getUnit(){
+    Unit getUnit(){
         return this->unit;
     }
 
